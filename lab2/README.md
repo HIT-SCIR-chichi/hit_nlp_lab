@@ -1,0 +1,33 @@
+# nlp_lab2
+## 几个原则
+- 通过中间文件或者各部分的结果文件进行项目交互
+- 流水线式处理：将任务划分为三个大部分：**关键词提取**、**属性分类**、**观点分类**
+## answer文件夹：实验结果文件夹
+- [task1_answer.csv](./answer/task1_answer.csv)：序号+属性词+观点词三元组
+- [task2_answer.csv](./answer/task2_answer.csv)：序号+属性词+观点词+类别四元组
+- [task3_answer.csv](./answer/task3_answer.csv)：序号+属性词+观点词+类别+极性五元组
+## source文件夹：源训练和测试数据文件夹
+- [train_reviews.csv](./source/train_reviews.csv)：训练评论文件
+- [train_labels.csv](./source/train_labels.csv)：训练标注文件
+- [test_reviews.csv](./source/test_reviews.csv)：测试评论文件
+## model文件夹：三个流水线部分生成的训练模型
+- extract文件夹：关键词提取相关模型
+    - extract.h5文件：关键词提取网络模型
+    - word2vec.pkl文件：关键词提取词向量模型
+- cate文件夹：属性分类相关模型
+    - cate_classify.h5文件：属性分类网络模型
+    - word2vec.pkl文件：属性分类词向量模型
+- opi文件夹：观点分类相关模型
+    - opi_classify.h5文件：观点分类网络模型
+    - word2vec.pkl文件：观点分类词向量模型
+## extract文件夹：关键字提取的训练和测试代码
+    待做：属性词和观点词的一一对应
+    待做：将标注结果采用独热表示
+- [extract_train.py](./extract/extract_train.py)：训练模型
+- [extract_test.py](./extract/extract_test.py)：测试数据
+## opi_classify文件夹：观点词分类的训练和测试代码
+- [opi_train.py](./opi_classify/opi_train.py)：训练属性词分类模型
+- [opi_test.py](./opi_classify/opi_test.py)：测试数据
+## cat_classify文件夹：属性词分类的训练和测试代码
+- [cat_train.py](./cat_classify/cat_train.py)：训练属性词分类模型
+- [cat_test.py](./cat_classify/cat_test.py)：测试数据
