@@ -32,7 +32,7 @@ def get_match():  # 得到关键词对应的匹配关系
                     asp += words[j - 1]
                 if tag == 'I-OPI' and 'ASP' not in tags[j - 1] and words[j - 1] not in ' ，。（':
                     opi += words[j - 1]
-            if (word in '，。)' or j == len(tags) - 1) and (asp or opi):  # 到句子分割单位或者结尾且提取词存在，强制匹配
+            if word in '，。' and (asp or opi):  # 如果碰到了一个句子分割单位，强制匹配
                 match = (asp, '_') if not opi else ('_', opi)
                 match = (asp, opi) if asp and opi else match  # 如果两者均非空
                 idx2match[i].append(match)
