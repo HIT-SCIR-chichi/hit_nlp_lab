@@ -1,11 +1,8 @@
-from opi_classify.opi_train import create_dic, Polarity
+from opi_classify.opi_train import create_dic, Polarity, Input_File, Answer_File
 from gensim.models.word2vec import Word2Vec
 from keras.models import load_model
 import jieba
 import csv
-
-Input_File = '../answer/task2_answer.csv'  # 提取关键词得到的文件
-Answer_File = '../answer/task3_answer.csv'  # 属性词分类得到的文件
 
 
 def get_data():

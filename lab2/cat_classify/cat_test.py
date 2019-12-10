@@ -1,11 +1,8 @@
-from cat_classify.cat_train import create_dic, Categories
+from cat_classify.cat_train import create_dic, Categories, Input_File, Answer_File
 from gensim.models.word2vec import Word2Vec
 from keras.models import load_model
 import jieba
 import csv
-
-Input_File = '../answer/task1_answer.csv'  # 提取关键词得到的文件
-Answer_File = '../answer/task2_answer.csv'  # 属性词分类得到的文件
 
 
 def get_data():

@@ -12,6 +12,8 @@ import pandas as pd
 import numpy as np
 import jieba
 
+Input_File = '../answer/task2_answer.csv'  # 提取关键词得到的文件
+Answer_File = '../answer/task3_answer.csv'  # 属性词分类得到文件
 Train_Labels = '../source/train_labels.csv'
 Polarity = ['中性', '正面', '负面']
 max_len = 10  # 观点词经分词后的分词数目
