@@ -27,17 +27,11 @@ def run_model():
 
 def get_match():  # 得到关键词对应的匹配关系
     review_lst, tag_lst, idx_lst = run_model()
-    # for review, tags in zip(review_lst, tag_lst):
-    #     line = ''
-    #     for word, tag in zip(review, tags):
-    #         line += tag + ' ' + word + '|  '
-    #     print(line)
     idx2match = {idx + 1: [] for idx in range(len(review_lst))}  # 初始化结果词典
     for i, words, tags in zip(idx_lst, review_lst, tag_lst):
         asp, opi, tags = '', '', list(tags)
         for j, (word, tag) in enumerate(zip(words, tags)):
             if (tag == 'I-ASP' and asp == '') or (tag == 'I-OPI' and opi == ''):
-                print(i)
                 if tag == 'I-ASP' and 'OPI' not in tags[j - 1] and words[j - 1] not in (' ', '，'):
                     asp += words[j - 1]
                 if tag == 'I-OPI' and 'ASP' not in tags[j - 1] and words[j - 1] not in (' ', '，'):

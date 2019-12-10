@@ -16,11 +16,11 @@ Test_Reviews = '../source/test_reviews.csv'  # 电商评论测试集源文件
 Test_Labels = '../source/test_labels.csv'  # 电商评论测试集结果文件
 Tag_Train = '../data/train.data'  # 标注训练集文本
 Tag_Test = '../data/test.data'  # 标注验证集文本
-Max_Len = 50  # 训练集和测试集分词后的最大词数
+Max_Len = 50  # 训练集一行分词的最大词数
 Embed_Dim = 100
-Units = 100
 Batches = 16
 Epochs = 10
+Units = 100
 
 
 def get_data():  # 获取分词后的训练数据及其对应的标注
