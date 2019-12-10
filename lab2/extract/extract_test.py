@@ -1,18 +1,14 @@
-from extract.extract_train import create_model, Label_Lst
+from extract.extract_train import create_model, Label_Lst, Test_Reviews, Answer_File, Max_Len
 from keras.preprocessing.sequence import pad_sequences
 import pandas as pd
 import jieba
 import csv
 
-Test_File = '../source/test_reviews.csv'  # 测试文本的csv文件
-Answer_File = '../answer/task1_answer.csv'  # 测试的结果文件
-Max_Len = 50  # 最长的评论字数
-
 
 def run_model():
     model, vocab = create_model(train=False)
     model.load_weights('../model/extract/extract.h5')  # 加载模型
-    test_csv_txt = pd.read_csv(Test_File)  # 读取测试文本
+    test_csv_txt = pd.read_csv(Test_Reviews)  # 读取测试文本
     review_lst = [jieba.lcut(review) for review in test_csv_txt['Review']]
     idx_lst = [idx for idx in test_csv_txt['id']]
     word2idx = dict((word, idx) for idx, word in enumerate(vocab))  # 获得字到序号的索引
