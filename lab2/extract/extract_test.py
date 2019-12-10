@@ -27,10 +27,10 @@ def get_match():  # 得到关键词对应的匹配关系
     for i, words, tags in zip(idx_lst, review_lst, tag_lst):
         asp, opi, tags = '', '', list(tags)
         for j, (word, tag) in enumerate(zip(words, tags)):
-            if (tag == 'I-ASP' and asp == '') or (tag == 'I-OPI' and opi == ''):
-                if tag == 'I-ASP' and 'OPI' not in tags[j - 1] and words[j - 1] not in (' ', '，'):
+            if (j > 0) and ((tag == 'I-ASP' and asp == '') or (tag == 'I-OPI' and opi == '')):
+                if tag == 'I-ASP' and 'OPI' not in tags[j - 1] and words[j - 1] not in ' ，。（':
                     asp += words[j - 1]
-                if tag == 'I-OPI' and 'ASP' not in tags[j - 1] and words[j - 1] not in (' ', '，'):
+                if tag == 'I-OPI' and 'ASP' not in tags[j - 1] and words[j - 1] not in ' ，。（':
                     opi += words[j - 1]
             if tag in ('B-ASP', 'I-ASP') or tag in ('B-OPI', 'I-OPI'):
                 asp += word if tag in ('B-ASP', 'I-ASP') else ''
