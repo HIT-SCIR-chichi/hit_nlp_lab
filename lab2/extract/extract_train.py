@@ -65,7 +65,7 @@ def load_data():
     vocab = [w for w, f in iter(word_counts.items()) if f >= 1]
     with open('../model/extract/word2vec.pkl', 'wb') as f:
         pickle.dump(vocab, f)
-    word2idx = dict((word, idx) for idx, word in enumerate(vocab))
+    word2idx = dict((word, idx + 1) for idx, word in enumerate(vocab))
     x = pad_sequences([[word2idx[w.lower()] for w in idx2words[i]] for i in idx2words], Max_Len)
     y = pad_sequences([[Label_Lst.index(w) for w in idx2labels[i]] for i in idx2labels], Max_Len)
     y = numpy.expand_dims(y, 2)  # n*Max_Len*1

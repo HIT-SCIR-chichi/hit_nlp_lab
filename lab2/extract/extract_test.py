@@ -11,7 +11,7 @@ def run_model():
     test_csv_txt = pd.read_csv(Test_Reviews)  # 读取测试文本
     review_lst = [jieba.lcut(review) for review in test_csv_txt['Review']]
     idx_lst = [idx for idx in test_csv_txt['id']]
-    word2idx = dict((word, idx) for idx, word in enumerate(vocab))  # 获得字到序号的索引
+    word2idx = dict((word, idx + 1) for idx, word in enumerate(vocab))  # 获得字到序号的索引
     data = [[word2idx.get(word.lower(), 0) for word in review] for review in review_lst]
     data = pad_sequences(data, Max_Len)  # n行，Max_Len列
     result = model.predict_classes(data)  # 得到标注列表，行如[[0,0],[1,2],[0,3]]
