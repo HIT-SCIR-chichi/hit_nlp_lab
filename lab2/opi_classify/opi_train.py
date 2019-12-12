@@ -81,7 +81,7 @@ def main():
     model.add(Activation('softmax'))
     model.summary()
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    hist = model.fit(data, label, Batch, Epochs, validation_split=0.2)
+    hist = model.fit(data, label, Batch, Epochs, validation_split=0.1)
     model.save('../model/opi/opi_classify.h5')
 
     plt.plot(range(Epochs), hist.history['val_acc'], label='val_acc')
