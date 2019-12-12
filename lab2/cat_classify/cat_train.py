@@ -1,10 +1,7 @@
-from keras.layers.core import Dense, Dropout, Activation
-from sklearn.model_selection import train_test_split
+from keras.layers import Dense, Dropout, Activation, Embedding, LSTM
+from keras.preprocessing.sequence import pad_sequences
 from gensim.corpora.dictionary import Dictionary
-from keras.layers.embeddings import Embedding
 from gensim.models.word2vec import Word2Vec
-from keras.preprocessing import sequence
-from keras.layers.recurrent import LSTM
 from keras.utils import to_categorical
 from keras.models import Sequential
 import matplotlib.pyplot as plt
@@ -59,27 +56,24 @@ def create_dic(embed_model, data):  # 建立词与id，词与向量的索引
         return result
 
     data = parse_data(data)
-    data = sequence.pad_sequences(data, maxlen=Max_Len)
+    data = pad_sequences(data, maxlen=Max_Len)
     return word2idx, word2vec, data
 
 
 def get_data(word2idx, word2vec, data, label):
     n_symbols = len(word2idx) + 1  # 因为频数小于min_count的词语索引为0，且存在不在词典中的词，所以+1
-    embed_weight = np.zeros((n_symbols, Embed_dim))  # n_symbols*100的0矩阵
+    embed = np.zeros((n_symbols, Embed_dim))  # n_symbols*100的0矩阵
     for word, index in word2idx.items():  # 从索引为1的词语开始，用词向量填充矩阵
-        embed_weight[index, :] = word2vec[word]  # 词向量矩阵，第一行是0向量
-    x_train, x_test, y_train, y_test = train_test_split(data, label, test_size=0.2)
-    y_train = to_categorical(y_train, num_classes=len(Categories))  # 将一维n元素列表转化为n维13元素（独热表示）列表
-    y_test = to_categorical(y_test, num_classes=len(Categories))
-    return n_symbols, embed_weight, x_train, y_train, x_test, y_test
+        embed[index, :] = word2vec[word]  # 词向量矩阵，第一行是0向量
+    label = to_categorical(label, num_classes=len(Categories))  # 将一维n元素列表转化为n维13元素（独热表示）列表
+    return n_symbols, embed, data, label
 
 
 def main():
     data, cat_lst = load_file()  # 一维列表
     data = [jieba.lcut(line) for line in data]  # 分词
     word2idx, word2vec, data = word2vec_train(data)  # 训练embedding向量
-    n, embed, x_train, y_train, x_test, y_test = get_data(word2idx, word2vec, data, cat_lst)
-
+    n, embed, data, label = get_data(word2idx, word2vec, data, cat_lst)
     model = Sequential()
     model.add(Embedding(n, Embed_dim, mask_zero=True, weights=[embed], input_length=Max_Len))
     model.add(LSTM(units=50, activation='tanh'))
@@ -88,7 +82,7 @@ def main():
     model.add(Activation('softmax'))
     model.summary()
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    hist = model.fit(x_train, y_train, Batch, Epochs, validation_data=[x_test, y_test])
+    hist = model.fit(data, label, Batch, Epochs, validation_split=0.1)
     model.save('../model/cate/cate_classify.h5')
 
     plt.plot(range(Epochs), hist.history['val_acc'], label='val_acc')
