@@ -1,4 +1,4 @@
-from keras.layers import Embedding, Bidirectional, LSTM, Dropout
+from keras.layers import Embedding, Bidirectional, LSTM, TimeDistributed, Dense, Dropout
 from keras.preprocessing.sequence import pad_sequences
 from keras_contrib.layers import CRF
 from keras.models import Sequential
@@ -18,7 +18,7 @@ Max_Len = 50  # 训练集一行分词的最大词数
 Embed_Dim = 100
 Batches = 16
 Epochs = 10
-Units = 100
+Units = 200
 
 
 def get_data():  # 获取分词后的训练数据及其对应的标注
@@ -80,12 +80,14 @@ def create_model(train=True):
             vocab = pickle.load(f)
     model = Sequential()
     model.add(Embedding(len(vocab) + 1, Embed_Dim, mask_zero=True, input_length=Max_Len))
+    model.add(Dropout(0.3))
     model.add(Bidirectional(LSTM(Units, return_sequences=True)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
+    model.add(TimeDistributed(Dense(5)))
     crf = CRF(len(Label_Lst), sparse_target=True)
     model.add(crf)  # 添加crf层
     model.summary()  # 查看网络结构
-    model.compile('adam', crf.loss_function, metrics=[crf.accuracy])
+    model.compile('rmsprop', crf.loss_function, metrics=[crf.accuracy])
     if train:
         return model, x, y
     else:
