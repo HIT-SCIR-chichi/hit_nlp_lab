@@ -21,8 +21,12 @@ def run_cat_model(asp_lst, opi_lst):
     model = load_model('../model/cate/cate_classify.h5')  # 加载模型结构和权重
     concat_lst = []  # 保存属性和观点的组合词，作为测试数据
     for asp, opi in zip(asp_lst, opi_lst):
-        concat_lst.append((asp + '，' + opi).strip('_').strip('，'))
-    concat_lst = [jieba.lcut(concat_line) for concat_line in concat_lst]  # 组合词分词
+        words = []
+        if asp != '_':
+            words.extend(jieba.lcut(asp))
+        if opi != '_':
+            words.extend(jieba.lcut(opi))
+        concat_lst.append(words)
     embed_model.train(concat_lst, total_examples=len(concat_lst), epochs=embed_model.epochs)
     test_feed = create_dic(embed_model, concat_lst)[2]
     result = model.predict_classes(test_feed)
