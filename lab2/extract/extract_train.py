@@ -1,4 +1,5 @@
 from keras.layers import Embedding, Bidirectional, LSTM, TimeDistributed, Dense, Dropout
+from config import Label_Lst, Train_Labels, Train_Reviews
 from keras.preprocessing.sequence import pad_sequences
 from keras_contrib.layers import CRF
 from keras.models import Sequential
@@ -9,11 +10,6 @@ import numpy
 import jieba
 import csv
 
-Label_Lst = ['O', 'B-ASP', 'I-ASP', 'B-OPI', 'I-OPI']  # 此处修改标签为本实验的标签
-Train_Reviews = '../source/train_reviews.csv'  # 电商评论训练集源文件
-Train_Labels = '../source/train_labels.csv'  # 电商评论训练集结果文件
-Test_Reviews = '../source/test_reviews.csv'  # 电商评论测试集源文件
-Answer_File = '../answer/task1_answer.csv'  # 测试的结果文件
 Max_Len = 50  # 训练集一行分词的最大词数
 Embed_Dim = 100
 Batches = 16

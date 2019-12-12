@@ -2,6 +2,7 @@ from keras.layers import Dense, Dropout, Activation, Embedding, LSTM
 from keras.preprocessing.sequence import pad_sequences
 from gensim.corpora.dictionary import Dictionary
 from gensim.models.word2vec import Word2Vec
+from config import Train_Labels, Categories
 from keras.utils import to_categorical
 from keras.models import Sequential
 import matplotlib.pyplot as plt
@@ -9,11 +10,6 @@ import pandas as pd
 import numpy as np
 import jieba
 
-Categories = ['整体', '使用体验', '功效', '价格', '物流', '气味', '包装', '真伪', '服务', '成分', '其他',
-              '尺寸', '新鲜度']  # 所有的类别标签(下标越小，出现频率越高)
-Input_File = '../answer/task1_answer.csv'  # 提取关键词得到的文件
-Answer_File = '../answer/task2_answer.csv'  # 属性词分类得到文件
-Train_Labels = '../source/train_labels.csv'
 Max_Len = 10  # 特征词+观点词分词后的分词数目最大值
 Embed_dim = 100  # 观点的词中的每一个输出的向量维度
 Min_Count = 1  # Word2Vec训练中的最小词频阈值

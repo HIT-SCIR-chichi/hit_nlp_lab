@@ -2,6 +2,7 @@ from keras.layers import Dense, Dropout, Activation, Embedding, LSTM
 from keras.preprocessing.sequence import pad_sequences
 from gensim.corpora.dictionary import Dictionary
 from gensim.models.word2vec import Word2Vec
+from config import Train_Labels, Polarity
 from keras.utils import to_categorical
 from keras.models import Sequential
 import matplotlib.pyplot as plt
@@ -9,10 +10,6 @@ import pandas as pd
 import numpy as np
 import jieba
 
-Input_File = '../answer/task2_answer.csv'  # 提取关键词得到的文件
-Answer_File = '../answer/task3_answer.csv'  # 属性词分类得到文件
-Train_Labels = '../source/train_labels.csv'
-Polarity = ['中性', '正面', '负面']
 max_len = 10  # 观点词经分词后的分词数目
 Embed_dim = 100  # 观点的词中的每一个输出的向量维度
 Min_Count = 1  # Word2Vec训练中的最小词频阈值

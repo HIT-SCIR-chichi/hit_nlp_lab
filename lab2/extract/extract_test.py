@@ -1,5 +1,6 @@
-from extract.extract_train import create_model, Label_Lst, Test_Reviews, Answer_File, Max_Len
+from extract.extract_train import create_model, Max_Len
 from keras.preprocessing.sequence import pad_sequences
+from config import Test_Reviews, Answer_1, Label_Lst
 import pandas as pd
 import jieba
 import csv
@@ -56,7 +57,7 @@ def get_match():  # 得到关键词对应的匹配关系
 def write2file():
     idx2match, idx_lst = get_match()
     result_lst = []
-    with open(Answer_File, 'w', encoding='utf-8', newline='') as f:
+    with open(Answer_1, 'w', encoding='utf-8', newline='') as f:
         for idx in idx_lst:
             for match in idx2match[idx]:
                 result_lst.append([idx, match[0], match[1]])

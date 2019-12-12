@@ -1,4 +1,5 @@
-from cat_classify.cat_train import create_dic, Categories, Input_File, Answer_File
+from config import Answer_1, Answer_2, Categories
+from cat_classify.cat_train import create_dic
 from gensim.models.word2vec import Word2Vec
 from keras.models import load_model
 import jieba
@@ -7,7 +8,7 @@ import csv
 
 def get_data():
     idx_lst, asp_lst, opi_lst = [], [], []
-    with open(Input_File, 'r', encoding='utf-8') as f:
+    with open(Answer_1, 'r', encoding='utf-8') as f:
         input_lines = csv.reader(f)
         for line in input_lines:
             idx_lst.append(int(line[0]))
@@ -36,7 +37,7 @@ def run_cat_model(asp_lst, opi_lst):
 def write2file():
     idx_lst, asp_lst, opi_lst = get_data()
     cat_lst = run_cat_model(asp_lst, opi_lst)
-    with open(Answer_File, 'w', encoding='utf-8', newline='') as f:
+    with open(Answer_2, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(zip(idx_lst, asp_lst, opi_lst, cat_lst))
 

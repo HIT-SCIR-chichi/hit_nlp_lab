@@ -2,6 +2,7 @@
 ## 几个原则
 - 通过中间文件或者各部分的结果文件进行项目交互
 - 流水线式处理：将任务划分为三个大部分：**关键词提取**、**属性分类**、**观点分类**
+## config.py文件：配置文件
 ## answer文件夹：实验结果文件夹
 - [task1_answer.csv](./answer/task1_answer.csv)：序号+属性词+观点词三元组
 - [task2_answer.csv](./answer/task2_answer.csv)：序号+属性词+观点词+类别四元组
