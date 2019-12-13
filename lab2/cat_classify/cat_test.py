@@ -28,7 +28,6 @@ def run_cat_model(asp_lst, opi_lst):
         if opi != '_':
             words.extend(jieba.lcut(opi))
         concat_lst.append(words)
-    embed_model.train(concat_lst, total_examples=len(concat_lst), epochs=embed_model.epochs)
     test_feed = create_dic(embed_model, concat_lst)[2]
     result = model.predict_classes(test_feed)
     return [Categories[i] for i in result]  # 返回值为列表，形如['使用体验', '物流', '功效', '价格']

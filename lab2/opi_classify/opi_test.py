@@ -22,7 +22,6 @@ def run_op_model(opi_lst):
     embed_model = Word2Vec.load('../model/opi/word2vec.pkl')  # 加载词向量模型
     model = load_model('../model/opi/opi_classify.h5')  # 加载模型结构和权重
     opi_lst = [jieba.lcut(line) for line in opi_lst]  # 将观点词分词
-    embed_model.train(opi_lst, total_examples=len(opi_lst), epochs=embed_model.epochs)  # 再次训练模型
     test_vec = create_dic(embed_model, opi_lst)[2]
     result = model.predict_classes(test_vec)
     return [Polarity[i] for i in result]
