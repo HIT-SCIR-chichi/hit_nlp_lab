@@ -90,6 +90,38 @@ def create_model(train=True):
         return model, vocab
 
 
+def test_train_review():
+    review_dic, block_dic, idx2labels = {}, {}, {}
+    with open(Train_Reviews, 'r', encoding='utf-8') as f_reviews:
+        reviews = csv.reader(f_reviews)
+        for line in reviews:
+            if line[0] == 'id':
+                continue
+            review_dic[int(line[0])] = line[1]
+            block_dic[int(line[0])] = {}
+    with open(Train_Labels, 'r', encoding='utf-8') as f_labels:
+        labels = csv.reader(f_labels)
+        for line in labels:
+            if line[0] == 'id':
+                continue
+            if line[1] != '_':
+                block_dic[int(line[0])][int(line[2])] = (int(line[2]), int(line[3]), 'ASP', line[1])
+            if line[4] != '_':
+                block_dic[int(line[0])][int(line[5])] = (int(line[5]), int(line[6]), 'OPI', line[4])
+    block_dic = {idx: {i: block_dic[idx][i] for i in sorted(block_dic[idx])} for idx in block_dic}
+    for idx in block_dic:
+        line_rev = str(review_dic[idx])
+        idx2labels[idx] = ['O'] * len(line_rev)
+        for j in block_dic[idx]:
+            flag = block_dic[idx][j][2]  # 标识ASP或者OPI
+            for k in range(j, block_dic[idx][j][1]):
+                idx2labels[idx][k] = 'B-' + flag if k == j else 'I-' + flag
+        for j in block_dic[idx]:  # 用于检查下标是否有误
+            if block_dic[idx][j][3] != review_dic[idx][j:block_dic[idx][j][1]]:
+                print(idx, j, review_dic[idx], block_dic[idx][j][3],
+                      review_dic[idx][j:block_dic[idx][j][1]])
+
+
 def main():
     model, x, y = create_model()
     hist = model.fit(x, y, Batches, Epochs, validation_split=0.1)  # 训练集和验证集为9:1
@@ -100,3 +132,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # test_train_review()
