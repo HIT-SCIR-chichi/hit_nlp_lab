@@ -38,20 +38,22 @@ def get_match():  # 得到关键词对应的匹配关系
                 opi += word
             elif tag == 'B-ASP':
                 if asp != '':  # 说明第二个属性词开始
-                    match = (asp, '_') if opi == '' else (asp, '_')
-                    idx2match[i].append(match)
-                    asp, opi = '', opi
-                asp += word
+                    match = (asp, '_')
+                    if match not in idx2match[i]:
+                        idx2match[i].append(match)
+                asp = word
             elif tag in ('B-OPI', 'O'):
                 if opi != '':  # 说明第二个观点词开始
                     match = ('_', opi) if asp == '' else (asp, opi)
-                    idx2match[i].append(match)
+                    if match not in idx2match[i]:
+                        idx2match[i].append(match)
                     asp, opi = '', ''
                 opi += word if tag != 'O' else ''
         if asp or opi:
             match = (asp, '_') if not opi else ('_', opi)
             match = (asp, opi) if asp and opi else match  # 如果两者均非空
-            idx2match[i].append(match)
+            if match not in idx2match[i]:
+                idx2match[i].append(match)
     return idx2match, idx_lst  # 返回值形如{1:[('快递'，'很快'),('包装','不错)],2:[('_','还不错')]}
 
 
