@@ -28,24 +28,30 @@ def get_match():  # 得到关键词对应的匹配关系
     for i, words, tags in zip(idx_lst, review_lst, tag_lst):
         asp, opi, tags = '', '', list(tags)
         for j, (word, tag) in enumerate(zip(words, tags)):
-            if (j > 0) and ((tag == 'I-ASP' and asp == '') or (tag == 'I-OPI' and opi == '')):
-                if tag == 'I-ASP' and 'OPI' not in tags[j - 1] and words[j - 1] not in ' ，。（':
+            if tag == 'I-ASP':
+                if asp == '' and j > 0 and 'OPI' not in tags[j - 1] and words[j - 1] not in '，。（':
                     asp += words[j - 1]
-                if tag == 'I-OPI' and 'ASP' not in tags[j - 1] and words[j - 1] not in ' ，。（':
+                asp += word
+            elif tag == 'I-OPI':
+                if opi == '' and j > 0 and 'ASP' not in tags[j - 1] and words[j - 1] not in '，。（':
                     opi += words[j - 1]
-            if word in '，。' and (asp or opi):  # 如果碰到了一个句子分割单位，强制匹配
-                match = (asp, '_') if not opi else ('_', opi)
-                match = (asp, opi) if asp and opi else match  # 如果两者均非空
-                idx2match[i].append(match)
-                asp, opi = '', ''
-                continue  # 跳过本次循环
-            if tag in ('B-ASP', 'I-ASP') or tag in ('B-OPI', 'I-OPI'):
-                asp += word if tag in ('B-ASP', 'I-ASP') else ''
-                opi += word if tag in ('B-OPI', 'I-OPI') else ''
-            else:
-                if opi:
-                    asp = '_' if not asp else asp
-                    idx2match[i].append((asp, opi))  # 加入结果列表中
+                opi += word
+            elif tag == 'B-ASP':
+                if asp != '':  # 说明第二个属性词开始
+                    print(i, j)
+                    pass
+                else:
+                    asp += word
+            elif tag == 'B-OPI':
+                if opi != '':  # 说明第二个观点词开始
+                    match = ('_', opi) if asp == '' else (asp, opi)
+                    idx2match[i].append(match)
+                    asp, opi = '', ''
+                opi += word
+            else:  # 碰到O
+                if opi != '':  # 说明第二个观点词开始
+                    match = ('_', opi) if asp == '' else (asp, opi)
+                    idx2match[i].append(match)
                     asp, opi = '', ''
         if asp or opi:
             match = (asp, '_') if not opi else ('_', opi)
