@@ -24,7 +24,7 @@ def load_file():  # 获得观点词及其对应的极性
         line = train_csv_label.iloc[idx]  # 取一行标注
         if line['OpinionTerms'] == '_':  # 不考虑观点词为空的情况
             continue
-        data.append(line['OpinionTerms'])
+        data.append(line['OpinionTerms' if line['OpinionTerms'] != '_' else 'AspectTerms'])
         label.append(Polarity.index(line['Polarities']))
     return data, label
 
